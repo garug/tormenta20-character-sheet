@@ -11,7 +11,7 @@
       <li
         v-for="spec in computedCharacter.race.value.powers"
         :key="spec.name"
-        class="mb-1"
+        class="mb-2"
       >
         <span class="destaque">{{ spec.name }}</span>
         {{ spec.description }}
