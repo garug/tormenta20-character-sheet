@@ -28,6 +28,8 @@ export interface ICharacterHook {
     removeDefense: (defenseName: string) => void,
     addDisable: (disable: IDisabled) => void,
     removeDisable: (disableName: string) => void,
+
+    isBlockDisabled: (blockName: string) => boolean,
 }
 
 export function generateDefaultCharacter(): IBaseCharacter {
@@ -121,6 +123,8 @@ export function useCharacter(character?: IBaseCharacter): ICharacterHook {
         }, [] as Array<IComputedClasse>);
     });
 
+    const computedTotalLevel = computed(() => computedClasses.value.reduce((acc, e) => acc + e.level, 0));
+
     function addClass(clss: IEntryClass) {
         baseCharacter.classes.push(clss);
     }
@@ -165,6 +169,7 @@ export function useCharacter(character?: IBaseCharacter): ICharacterHook {
     const computedCharacter: IComputedCharacter = {
         race: computedRace,
         classes: computedClasses,
+        totalLevel: computedTotalLevel,
         attributes: computedAttributes,
         origin: computedOrigin,
         remaining: computedRemaining,
@@ -173,6 +178,9 @@ export function useCharacter(character?: IBaseCharacter): ICharacterHook {
     }
 
     // Métodos gerais
+    const isBlockDisabled = (identifier: string) =>
+      computedCharacter.disableds.value.some((d) => d.affect === identifier);
+
     function setMovement(movement: number) {
         // TODO implementar
     }
@@ -210,6 +218,8 @@ export function useCharacter(character?: IBaseCharacter): ICharacterHook {
         applyImunidade,
         addDisable,
         removeDisable,
+
+        isBlockDisabled,
     }
 
     return hook;

@@ -17,6 +17,7 @@ export interface IBaseCharacter {
 export interface IComputedCharacter {
     race: ComputedRef<IComputedRace | undefined>,
     classes: ComputedRef<Array<IComputedClasse>>,
+    totalLevel: ComputedRef<number>,
     origin: ComputedRef<IComputedOrigin | undefined>,
     attributes: ComputedRef<Array<IComputedAttribute>>,
     remaining: ComputedRef<number>,
