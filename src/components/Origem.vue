@@ -1,5 +1,5 @@
 <template>
-  <article class="mb-1">
+  <section class="mb-1">
     <h1 class="customized">Origem</h1>
     <select v-model="controlOrigin" :disabled="hook.isBlockDisabled('origin')">
       <option :value="undefined">Selecione uma Origem</option>
@@ -13,7 +13,7 @@
         {{ baseCharacter.origin.name }}
       </option>
     </select>
-  </article>
+  </section>
 </template>
 
 <script lang="ts">
