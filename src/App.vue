@@ -7,12 +7,6 @@
       <Origem :hook="characterHook" />
     </section>
   </div>
-  <div v-if="showModal" class="modal">
-    <div class="container">
-      <div @click="showModal = false">x</div>
-      <p>Olá Modal</p>
-    </div>
-  </div>
 </template>
 
 <script lang="ts">
@@ -32,11 +26,8 @@ export default {
   },
 
   setup() {
-    const showModal = ref(false);
-
     return {
       characterHook,
-      showModal,
     };
   },
 };
@@ -49,6 +40,8 @@ export default {
   width: 100vw;
   height: 100vh;
   top: 0;
+  left: 0;
+  z-index: 1;
 
   .container {
     background: #fff;
@@ -61,20 +54,26 @@ export default {
     min-width: 300px;
     left: 50%;
     right: 50%;
-    padding: 50px;
+    padding: 25px 50px;
     box-sizing: border-box;
     transform: translateX(-50%);
     box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
     border-radius: 5px;
   }
+
+  .fechar {
+    position: absolute;
+    top: 5px;
+    right: 15px;
+    color: #888;
+    font-weight: bolder;
+    font-size: 24px;
+    cursor: pointer;
+  }
 }
 #app {
   background-color: #f6f6f6;
   font-family: "source sans pro";
-}
-
-.mb-1 {
-  margin-bottom: 15px;
 }
 
 .d-flex {
@@ -93,6 +92,18 @@ export default {
   justify-content: space-between;
 }
 
+.mb-1 {
+  margin-bottom: 5px;
+}
+
+.mb-2 {
+  margin-bottom: 5px;
+}
+
+.mb-3 {
+  margin-bottom: 15px;
+}
+
 .mr-1 {
   margin-right: 5px;
 }
@@ -109,6 +120,10 @@ select {
 select:focus,
 select:active {
   border-color: $red;
+}
+
+select:disabled {
+  border-color: #ddd;
 }
 
 h1,
@@ -161,19 +176,27 @@ hr {
 button {
   outline: 0;
   background: $red;
-  border: 0;
+  border: 2px solid transparent;
   color: $yellow;
   font-family: iowan;
   font-weight: bolder;
   padding: 5px 15px;
   border-radius: 2px;
   cursor: pointer;
+  transition: all ease .2s;
+}
+
+button:hover {
+  background: transparent;
+  border-color: $red;
+  color: $red;
 }
 
 button:disabled {
   background-color: #ddd9d5;
   color: #fff;
   cursor: default;
+  border-color: transparent;
 }
 
 .ficha {
