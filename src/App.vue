@@ -81,6 +81,10 @@ export default {
   display: flex;
 }
 
+.align-items-center {
+  align-items: center;
+}
+
 .justify-evenly {
   justify-content: space-evenly;
 }
@@ -180,6 +184,8 @@ button:disabled {
 
 .destaque {
   font-weight: bolder;
+  font-family: iowan;
+  font-size: 14px;
   color: $red;
   margin-right: 5px;
 }
