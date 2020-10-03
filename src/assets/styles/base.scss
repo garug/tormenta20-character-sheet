@@ -1,0 +1,33 @@
+@import "~@/assets/styles/reset.css";
+
+@font-face {
+    font-family: tormenta20;
+    src: url("~@/assets/fonts/Tormenta20.ttf");
+  }
+  
+  @font-face {
+    font-family: iowan;
+    src: url("~@/assets/fonts/Iowan-Old-Style-Regular.ttf");
+    font-weight: 400;
+  }
+  
+  @font-face {
+    font-family: iowan;
+    src: url("~@/assets/fonts/Iowan-Old-Style-Bold.otf") format("otf");
+    font-weight: 800;
+  }
+  
+  @font-face {
+    font-family: "source sans pro";
+    src: url("~@/assets/fonts/Source-Sans-Pro-Regular.ttf");
+  }
+  
+  @font-face {
+    font-family: "source sans pro";
+    src: url("~@/assets/fonts/Source-Sans-Pro-Bold.ttf");
+    font-weight: 800;
+  }
+  
+  $red: #b02b2e;
+  $yellow: #f0dc82;
+  $main: #3f0f12;
