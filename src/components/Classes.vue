@@ -6,9 +6,7 @@
         <option :value="undefined">Selecione uma Classe</option>
         <option
           :value="clss.name"
-          :disabled="
-            computedCharacter.classes.value.some((e) => e.name === clss.name)
-          "
+          :disabled="disabledClass(clss)"
           v-for="clss in classes"
           :key="clss.name"
         >
@@ -21,9 +19,9 @@
       <div
         v-for="clss in computedCharacter.classes.value"
         :key="clss.name"
-        class="d-flex justify-between"
+        class="d-flex justify-between align-items-center"
       >
-        <p>{{ clss }}</p>
+        <p style="flex-grow: 1">{{ clss.name }} Lv. {{ clss.level }}</p>
         <button disabled>Editar</button>
         <button @click="hook.removeClass(clss.name)">Remover</button>
       </div>
@@ -37,6 +35,7 @@ import classes from "@/states/classes";
 
 import { defineComponent, ref } from "vue";
 import { ICharacterHook } from "@/character.hook";
+import { IComputedClasse } from "@/types/classes.types";
 
 export default defineComponent({
   name: "Classes",
@@ -61,11 +60,15 @@ export default defineComponent({
       }
     }
 
+    const disabledClass = (clss: IComputedClasse) =>
+      computedCharacter.classes.value.some((e) => e.name === clss.name);
+
     return {
       hook,
       classes,
       activeClass,
       applyClass,
+      disabledClass,
       computedCharacter,
     };
   },
