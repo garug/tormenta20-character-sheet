@@ -7,9 +7,16 @@
       <Origem :hook="characterHook" />
     </section>
   </div>
+  <div v-if="showModal" class="modal">
+    <div class="container">
+      <div @click="showModal = false">x</div>
+      <p>Olá Modal</p>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
+import { ref } from "vue";
 import characterHook from "./character.store";
 import Atributos from "./components/Atributos.vue";
 import Raca from "./components/Raca.vue";
@@ -25,14 +32,42 @@ export default {
   },
 
   setup() {
+    const showModal = ref(false);
+
     return {
       characterHook,
+      showModal,
     };
   },
 };
 </script>
 
 <style lang="scss">
+.modal {
+  position: fixed;
+  background: rgba(0, 0, 0, 0.2);
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+
+  .container {
+    background: #fff;
+    height: auto;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    top: 25vh;
+    width: 50vw;
+    min-width: 300px;
+    left: 50%;
+    right: 50%;
+    padding: 50px;
+    box-sizing: border-box;
+    transform: translateX(-50%);
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+  }
+}
 #app {
   background-color: #f6f6f6;
   font-family: "source sans pro";
