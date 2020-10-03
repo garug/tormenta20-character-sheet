@@ -2,7 +2,7 @@ import { computed, watch, reactive, ref, ComputedRef } from "vue";
 
 import { IBaseCharacter, IComputedCharacter, IDisabled, IOtherDefense } from './types/character.types';
 import { IEntryAttribute } from './types/attribute.types';
-import { IComputedClasse, IEntryClass } from './types/classes.types';
+import { IBaseClasse, IComputedClasse, IEntryClass, Levels } from './types/classes.types';
 import { IPower } from './types/power.types';
 import { useAttributes, useRemaining } from './states/attributes';
 import { IBaseRace, IComputedRace } from './types/race.types';
@@ -19,6 +19,8 @@ export interface ICharacterHook {
     setAttribute: (entry: IEntryAttribute) => void,
     setRace: (race?: IBaseRace) => void,
     setOrigin: (origin?: IBaseOrigin) => void,
+    setMainClass: (clss?: IBaseClasse) => void,
+    setLevelClss: (clss: IBaseClasse, level: Levels) => void,
     setMovement: (movement: number) => void,
     addClass: (clss: IEntryClass) => void,
     removeClass: (className: string) => void,
@@ -123,6 +125,7 @@ export function useCharacter(character?: IBaseCharacter): ICharacterHook {
         }, [] as Array<IComputedClasse>);
     });
 
+    const computedMainClass = computed(() => computedClasses.value.find(c => c.name === baseCharacter.mainClass?.name));
     const computedTotalLevel = computed(() => computedClasses.value.reduce((acc, e) => acc + e.level, 0));
 
     function addClass(clss: IEntryClass) {
@@ -136,6 +139,18 @@ export function useCharacter(character?: IBaseCharacter): ICharacterHook {
         }
     }
 
+    function setMainClass(clss?: IBaseClasse) {
+        baseCharacter.mainClass = clss;
+    }
+
+    function setLevelClss(clss: IBaseClasse, level: Levels) {
+        const activeClss = baseCharacter.classes.find(c => c.name === clss.name);
+        if (activeClss) {
+            activeClss.level = level;
+        } else {
+            console.warn(`You tried update a class not exists on character`);
+        }
+    }
 
     // Controle de Poderes
     const computedImmunities = computed(() => baseCharacter.immunities || []);
@@ -169,6 +184,7 @@ export function useCharacter(character?: IBaseCharacter): ICharacterHook {
     const computedCharacter: IComputedCharacter = {
         race: computedRace,
         classes: computedClasses,
+        mainClass: computedMainClass,
         totalLevel: computedTotalLevel,
         attributes: computedAttributes,
         origin: computedOrigin,
@@ -179,7 +195,7 @@ export function useCharacter(character?: IBaseCharacter): ICharacterHook {
 
     // Métodos gerais
     const isBlockDisabled = (identifier: string) =>
-      computedCharacter.disableds.value.some((d) => d.affect === identifier);
+        computedCharacter.disableds.value.some((d) => d.affect === identifier);
 
     function setMovement(movement: number) {
         // TODO implementar
@@ -207,6 +223,8 @@ export function useCharacter(character?: IBaseCharacter): ICharacterHook {
 
         setAttribute,
         setRace,
+        setMainClass,
+        setLevelClss,
         setOrigin,
         addClass,
         removeClass,
