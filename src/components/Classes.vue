@@ -13,7 +13,7 @@
           {{ clss.name }}
         </option>
       </select>
-      <button :disabled="!activeClass" @click="applyClass">+</button>
+      <button :disabled="!activeClass" @click="newClass">+</button>
     </div>
     <template v-if="computedCharacter.classes.value.length > 0">
       <div
@@ -34,16 +34,11 @@
   </section>
   <div v-if="showModal" class="modal">
     <div class="container">
-      <div class="fechar" @click="showModal = false">x</div>
       <div class="d-flex align-items-center">
         <h1 class="mr-1">{{ modalClass.name }}</h1>
         <div>
           <p class="destaque">Level:</p>
-          <select
-            v-model="controlModalLevel"
-            :selected="modalClass.value?.level.toString()"
-            @change="updateLevel(modalClass, Number($event.target.value))"
-          >
+          <select v-model="controlModalLevel">
             <option
               :disabled="isBlockedLevel(item)"
               v-for="item in 20"
@@ -57,7 +52,8 @@
       </div>
       <hr />
       <p class="mb-3">{{ modalClass }}</p>
-      <button @click="showModal = false">Finalizar</button>
+      <button @click="applyClass" class="mr-1">Aplicar Mudanças</button>
+      <button @click="showModal = false" class="outline">Cancelar</button>
     </div>
   </div>
 </template>
@@ -65,7 +61,7 @@
 <script lang="ts">
 import classes from "@/states/classes";
 
-import { defineComponent, ref, computed, reactive } from "vue";
+import { defineComponent, ref, computed, reactive, readonly } from "vue";
 import { ICharacterHook } from "@/character.hook";
 import { IComputedClasse, Levels } from "@/types/classes.types";
 
@@ -83,11 +79,15 @@ export default defineComponent({
     const { hook } = props;
     const { computedCharacter, baseCharacter, setRace } = hook;
 
+    interface IModalClass extends IComputedClasse {
+      originalLevel: Levels,
+    }
+
     const showModal = ref(false);
     const activeClass = ref(undefined);
-    let modalClass = ref<IComputedClasse>({} as IComputedClasse);
+    let modalClass = ref<IModalClass>({} as IModalClass);
 
-    function applyClass() {
+    function newClass() {
       if (activeClass.value) {
         hook.addClass({ name: activeClass.value || "", level: 1 });
         activeClass.value = undefined;
@@ -95,8 +95,14 @@ export default defineComponent({
     }
 
     function openEditor(clss: IComputedClasse) {
-      modalClass.value = clss;
+      modalClass.value = { ...clss, originalLevel: clss.level };
       showModal.value = true;
+    }
+
+    function applyClass() {
+      const clss = modalClass.value;
+      hook.setLevelClss(clss, clss.level);
+      showModal.value = false
     }
 
     function isMainClass(clss: IComputedClasse) {
@@ -117,20 +123,14 @@ export default defineComponent({
 
     const controlModalLevel = computed({
       get: () => modalClass.value?.level,
-      set: (value) => updateLevel(modalClass.value, Number(value) as Levels),
+      set: (value) => modalClass.value.level = value,
     });
 
-    function updateLevel(clss: IComputedClasse, level: Levels) {
-      hook.setLevelClss(clss, level);
-    }
-
     function isBlockedLevel(number: number) {
-      const maxLevelClass =
-        computedCharacter.totalLevel.value + (modalClass.value?.level || 0);
       const total =
         20 -
         computedCharacter.totalLevel.value +
-        (modalClass.value?.level || 0);
+        (modalClass.value?.originalLevel || 0);
       // console.log(number, total, number > total);
       return number > total;
     }
@@ -143,6 +143,7 @@ export default defineComponent({
       hook,
       classes,
       activeClass,
+      newClass,
       applyClass,
       disabledClass,
       computedCharacter,
@@ -151,7 +152,6 @@ export default defineComponent({
       showModal,
       openEditor,
       modalClass,
-      updateLevel,
       isBlockedLevel,
       controlModalLevel,
     };
