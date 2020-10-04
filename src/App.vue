@@ -10,7 +10,6 @@
 </template>
 
 <script lang="ts">
-import { ref } from "vue";
 import characterHook from "./character.store";
 import Atributos from "./components/Atributos.vue";
 import Raca from "./components/Raca.vue";
@@ -74,6 +73,8 @@ export default {
 #app {
   background-color: #f6f6f6;
   font-family: "source sans pro";
+  max-width: 100vw;
+  overflow: hidden;
 }
 
 .d-flex {
@@ -183,7 +184,13 @@ button {
   padding: 5px 15px;
   border-radius: 2px;
   cursor: pointer;
-  transition: all ease .2s;
+  transition: all ease 0.2s;
+}
+
+button.outline {
+  background: transparent;
+  border-color: #888;
+  color: #888;
 }
 
 button:hover {
