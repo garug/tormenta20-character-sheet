@@ -4,6 +4,7 @@ import { IBaseClasse, IComputedClasse } from '@/types/classes.types';
 import { IImmunity, IPower } from '@/types/power.types';
 import { IBaseOrigin, IComputedOrigin } from '@/types/origin.types';
 import { IBaseRace, IComputedRace } from './race.types';
+import { IPericia, PericiaName } from './pericia.types'
 
 export interface IBaseCharacter {
     race?: IBaseRace,
@@ -13,6 +14,7 @@ export interface IBaseCharacter {
     attributes: Attributes,
     immunities?: Array<IImmunity>,
     disableds?: Array<IDisabled>,
+    pericias?: Array<PericiaName>,
 }
 
 export interface IComputedCharacter {
@@ -26,6 +28,7 @@ export interface IComputedCharacter {
     immunities: ComputedRef<Array<IImmunity>>,
     // powers: Array<IPower>,
     disableds: ComputedRef<Array<IDisabled>>,
+    pericias: ComputedRef<Array<IPericia>>,
 }
 
 export interface IOtherDefense {
