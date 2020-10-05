@@ -6,6 +6,7 @@
       <Classes :hook="characterHook" />
       <Origem :hook="characterHook" />
     </section>
+    <Pericias :hook="characterHook" />
   </div>
 </template>
 
@@ -15,6 +16,7 @@ import Atributos from "./components/Atributos.vue";
 import Raca from "./components/Raca.vue";
 import Classes from "./components/Classes.vue";
 import Origem from "./components/Origem.vue";
+import Pericias from "./components/Pericias.vue";
 
 export default {
   components: {
@@ -22,6 +24,7 @@ export default {
     Raca,
     Classes,
     Origem,
+    Pericias,
   },
 
   setup() {
@@ -161,17 +164,6 @@ hr {
   height: 1px;
   border: none;
   display: block;
-}
-
-.pericias-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-
-  div {
-    display: flex;
-    justify-content: end;
-    margin-bottom: 2px;
-  }
 }
 
 button {

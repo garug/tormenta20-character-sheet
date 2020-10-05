@@ -1,4 +1,4 @@
-import { computed, watch, reactive, ref, ComputedRef } from "vue";
+import { computed, watch, reactive, ref, ComputedRef, watchEffect } from "vue";
 
 import { IBaseCharacter, IComputedCharacter, IDisabled, IOtherDefense } from './types/character.types';
 import { IEntryAttribute } from './types/attribute.types';
@@ -10,6 +10,8 @@ import { IBaseOrigin, IComputedOrigin } from './types/origin.types';
 
 import races from './states/races';
 import classes from './states/classes';
+import pericias from './states/pericias';
+import { IPericia, PericiaName } from './types/pericia.types';
 
 export interface ICharacterHook {
     computedCharacter: IComputedCharacter,
@@ -21,6 +23,7 @@ export interface ICharacterHook {
     setOrigin: (origin?: IBaseOrigin) => void,
     setMainClass: (clss?: IBaseClasse) => void,
     setLevelClss: (clss: IBaseClasse, level: Levels) => void,
+    setPericias: (pericias: Array<PericiaName>) => void,
     setMovement: (movement: number) => void,
     addClass: (clss: IEntryClass) => void,
     removeClass: (className: string) => void,
@@ -98,6 +101,7 @@ export function useCharacter(character?: IBaseCharacter): ICharacterHook {
         const origin: IComputedOrigin = {
             custom: false,
             name: "",
+            description: "",
             ...baseCharacter.origin,
         }
 
@@ -127,6 +131,12 @@ export function useCharacter(character?: IBaseCharacter): ICharacterHook {
 
     const computedMainClass = computed(() => computedClasses.value.find(c => c.name === baseCharacter.mainClass?.name));
     const computedTotalLevel = computed(() => computedClasses.value.reduce((acc, e) => acc + e.level, 0));
+
+    watch(computedMainClass, (value) => {
+        if (value) {
+            value.pericias.fixed.forEach(p => addPericia(p));
+        }
+    });
 
     function addClass(clss: IEntryClass) {
         baseCharacter.classes.push(clss);
@@ -177,6 +187,31 @@ export function useCharacter(character?: IBaseCharacter): ICharacterHook {
         }
     }
 
+    // Controle de pericias
+    const computedPericias = computed(() => {
+        return (baseCharacter.pericias ||= []).reduce((acc, p) => {
+            const defaultPericia = pericias.find(p2 => p2.name === p);
+            if (defaultPericia) {
+                acc.push(defaultPericia);
+            } else {
+                console.warn(`Invalid Pericia: ${p}`);
+            }
+            return acc;
+        }, [] as Array<IPericia>);
+    });
+
+    function setPericias(pericias: Array<PericiaName>) {
+        baseCharacter.pericias = pericias.map(p => p);
+    }
+
+    function addPericia(pericia: PericiaName) {
+        (baseCharacter.pericias ||= []).push(pericia);
+    }
+
+    function removePericia(pericia: PericiaName) {
+        baseCharacter.pericias = (baseCharacter.pericias ||= []).filter(p => pericia !== p);
+    }
+
     // Controle de blocos desabilitados
     const computedDisableds = computed(() => baseCharacter.disableds || []);
 
@@ -191,6 +226,7 @@ export function useCharacter(character?: IBaseCharacter): ICharacterHook {
         remaining: computedRemaining,
         immunities: computedImmunities,
         disableds: computedDisableds,
+        pericias: computedPericias,
     }
 
     // Métodos gerais
@@ -226,6 +262,7 @@ export function useCharacter(character?: IBaseCharacter): ICharacterHook {
         setMainClass,
         setLevelClss,
         setOrigin,
+        setPericias,
         addClass,
         removeClass,
         addPower,

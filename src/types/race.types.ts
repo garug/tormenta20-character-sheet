@@ -9,5 +9,5 @@ export interface IBaseRace {
 
 export interface IComputedRace extends IBaseRace {
     attributes: Array<IAttributeModification>,
-    powers?: IPower[],
+    powers?: Array<IPower>,
 }
