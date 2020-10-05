@@ -1,6 +1,20 @@
 
 import { defaultMovement } from '@/types/character.types';
+import { IPower } from '@/types/power.types';
 import { IComputedRace } from '@/types/race.types';
+
+const semOrigem: IPower = {
+    name: 'Sem Origem',
+    description: 'Como uma criatura artificial, você já foi construído “pronto”. Não teve uma infância — portanto, não tem direito a escolher uma origem e receber benefícios por ela',
+    rule: (character) => {
+        character.setOrigin({ custom: true, description: semOrigem.description, name: 'Sem Origem', powers: [] });
+        character.addDisable({ name: 'race-origin-golem', affect: 'origin' });
+    },
+    undo: (character) => {
+        character.removeDisable('race-origin-golem');
+        character.setOrigin(undefined);
+    }
+}
 
 const golem: IComputedRace = {
     name: "Golem",
@@ -33,18 +47,7 @@ const golem: IComputedRace = {
             undo: (character) => character.applyImunidade('Espírito Elemental')
 
         },
-        {
-            name: 'Sem Origem',
-            description: 'Como uma criatura artificial, você já foi construído “pronto”. Não teve uma infância — portanto, não tem direito a escolher uma origem e receber benefícios por ela',
-            rule: (character) => {
-                character.setOrigin({ custom: true, name: 'Sem Origem', powers: [] });
-                character.addDisable({ name: 'race-origin-golem', affect: 'origin' });
-            },
-            undo: (character) => {
-                character.removeDisable('race-origin-golem');
-                character.setOrigin(undefined);
-            }
-        }
+        semOrigem,
     ]
 }
 
