@@ -1,7 +1,7 @@
 <template>
   <section class="mb-1">
     <h1 class="customized">Origem</h1>
-    <select v-model="controlOrigin" :disabled="hook.isBlockDisabled('origin')">
+    <select class="mb-1" v-model="controlOrigin" :disabled="hook.isBlockDisabled('origin')">
       <option :value="undefined">Selecione uma Origem</option>
       <option v-for="origin in origins" :key="origin.name" :value="origin.name">
         {{ origin.name }}
@@ -13,6 +13,7 @@
         {{ baseCharacter.origin.name }}
       </option>
     </select>
+    <p>{{ baseCharacter.origin.description }}</p>
   </section>
 </template>
 
