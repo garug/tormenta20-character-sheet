@@ -1,6 +1,12 @@
 <template>
-  <div class="switch-container" :class="control ? 'active' : ''">
-    <input v-model="control" :name="id" :id="id" type="checkbox" />
+  <div class="switch-container" :class="{ active: control, disabled }">
+    <input
+      :disabled="disabled"
+      v-model="control"
+      :name="id"
+      :id="id"
+      type="checkbox"
+    />
     <label :for="id" class="switch">
       <span class="slider round"></span>
     </label>
@@ -15,6 +21,7 @@ export default {
   props: {
     label: String,
     activator: Boolean,
+    disabled: Boolean,
   },
 
   data() {
@@ -34,13 +41,15 @@ export default {
   },
 
   watch: {
-    control() {
-      this.$emit("update:activator", this.control);
+    control(val, old) {
+      if (!!val !== !!old) {
+        this.$emit("update:activator", this.control);
+      }
     },
 
     activator() {
       this.control = this.activator;
-    }
+    },
   },
 };
 </script>
@@ -85,6 +94,11 @@ input {
   transition: 0.4s;
 }
 
+.switch-container.disabled .slider,
+.switch-container.disabled .label {
+  cursor: not-allowed;
+}
+
 .slider:before {
   position: absolute;
   content: "";
@@ -101,9 +115,17 @@ input {
   background-color: $red;
 }
 
+.switch-container.disabled .slider {
+  background-color: #eee;
+}
+
 .switch-container.active .slider:before {
   left: 18px;
   background-color: $yellow;
+}
+
+.switch-container.active.disabled .slider:before {
+  background-color: #ccc;
 }
 
 /* Rounded sliders */
