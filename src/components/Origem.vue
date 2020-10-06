@@ -13,7 +13,7 @@
         {{ baseCharacter.origin.name }}
       </option>
     </select>
-    <p>{{ baseCharacter.origin.description }}</p>
+    <p>{{ baseCharacter.origin?.description }}</p>
   </section>
 </template>
 
