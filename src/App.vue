@@ -7,6 +7,7 @@
       <Origem :hook="characterHook" />
     </section>
     <Pericias :hook="characterHook" />
+    <Itens :hook="characterHook" />
   </div>
 </template>
 
@@ -17,6 +18,7 @@ import Raca from "./components/Raca.vue";
 import Classes from "./components/Classes.vue";
 import Origem from "./components/Origem.vue";
 import Pericias from "./components/Pericias.vue";
+import Itens from './components/Itens.vue';
 
 export default {
   components: {
@@ -25,6 +27,7 @@ export default {
     Classes,
     Origem,
     Pericias,
+    Itens,
   },
 
   setup() {
