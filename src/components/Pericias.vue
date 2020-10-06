@@ -19,7 +19,7 @@
     </template>
     <p v-else>Nenhuma classe principal selecionada</p>
     <hr />
-    <div class="pericias-container">
+    <div class="pericias-container mb-1">
       <div v-for="pericia in pericias" :key="pericia.name">
         <Switch
           :disabled="disabledPericia(pericia)"
@@ -29,6 +29,7 @@
         />
       </div>
     </div>
+    <button class="outline w-100" @click="resetPericias">Reiniciar Perícias</button>
   </section>
 </template>
 
@@ -90,6 +91,10 @@ export default defineComponent({
       }
     }
 
+    function resetPericias() {
+      selected.value = periciasClasse.value?.fixed || [];
+    }
+
     watch(selected, () => {
       hook.setPericias([...selected.value])
     });
@@ -97,6 +102,7 @@ export default defineComponent({
     return {
       validator,
       totalPericia,
+      resetPericias,
       pericias,
       modInt,
       periciasClasse,
