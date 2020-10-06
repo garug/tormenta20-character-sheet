@@ -34,7 +34,7 @@
 
 <script lang="ts">
 import { ICharacterHook } from '@/character.hook';
-import { defineComponent, computed, watch, ref, reactive } from 'vue';
+import { defineComponent, computed, watch, ref } from 'vue';
 import pericias from '@/states/pericias';
 import { IPericia, PericiaName } from '@/types/pericia.types';
 
