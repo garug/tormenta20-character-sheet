@@ -112,6 +112,10 @@ export default {
   margin-right: 5px;
 }
 
+.w-100 {
+  width: 100%;
+}
+
 select {
   outline: none;
   height: 35px;
