@@ -34,7 +34,7 @@
 
 <script lang="ts">
 import { ICharacterHook } from '@/character.hook';
-import { defineComponent, computed, watch, ref } from 'vue';
+import { defineComponent, computed, watch, ref, reactive } from 'vue';
 import pericias from '@/states/pericias';
 import { IPericia, PericiaName } from '@/types/pericia.types';
 
@@ -53,36 +53,57 @@ export default defineComponent({
 
     const modInt = computed(() => hook.computedCharacter.attributes.value[3].mod);
     const periciasClasse = computed(() => hook.computedCharacter.mainClass.value?.pericias);
-    const manualSelected = ref<Array<PericiaName>>([]);
+    const selected = ref<Array<PericiaName>>([]);
+
+    const totalPericia = computed(() =>
+      modInt.value + (periciasClasse.value?.numberToChoose || 0)
+    );
+
+    const validator = {
+      modificador: computed(() => selected.value.length >= modInt.value + (periciasClasse.value?.fixed.length || 0)),
+      classe: computed(() => periciasClasse.value?.choosable.some(ch => selected.value.some(s => s === ch))),
+      total: computed(() => totalPericia.value === selected.value.length),
+    }
 
     function selectedPericia(pericia: IPericia) {
       return hook.baseCharacter.pericias?.some(p => pericia.name === p);
     }
 
     function disabledPericia(pericia: IPericia) {
-      return periciasClasse.value?.fixed.some(p => p === pericia.name);
+      if (periciasClasse.value?.fixed.some(p => p === pericia.name))
+        return true;
+
+      const maximoSelecionado = selected.value.length >= totalPericia.value + (periciasClasse.value?.fixed.length || 0);
+      const atualmenteSelecionado = selected.value.some(p => pericia.name === p);
+
+      if (maximoSelecionado && !atualmenteSelecionado)
+        return true
+
+      return false;
     }
 
     function togglePericia(pericia: IPericia, active: boolean) {
-      if (active && manualSelected.value.every(p => p !== pericia.name)) {
-        manualSelected.value = [...manualSelected.value, pericia.name];
+      if (active && selected.value.every(p => p !== pericia.name)) {
+        selected.value = [...selected.value, pericia.name];
       } else {
-        manualSelected.value = manualSelected.value.filter(p => p !== pericia.name);
+        selected.value = selected.value.filter(p => p !== pericia.name);
       }
     }
 
-    watch(manualSelected, () => {
-      hook.setPericias([...manualSelected.value])
+    watch(selected, () => {
+      hook.setPericias([...selected.value])
     });
 
     return {
+      validator,
+      totalPericia,
       pericias,
       modInt,
       periciasClasse,
       selectedPericia,
       disabledPericia,
       togglePericia,
-      manualSelected,
+      selected,
     }
   }
 })
