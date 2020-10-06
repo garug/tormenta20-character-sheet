@@ -140,12 +140,20 @@ export function useCharacter(character?: IBaseCharacter): ICharacterHook {
 
     function addClass(clss: IEntryClass) {
         baseCharacter.classes.push(clss);
+
+        if (!baseCharacter.mainClass) {
+            baseCharacter.mainClass = clss;
+        }
     }
 
     function removeClass(className: string) {
         const savedIndex = baseCharacter.classes.findIndex(c => c.name === className);
         if (savedIndex > -1) {
             baseCharacter.classes?.splice(savedIndex, 1);
+        }
+
+        if (baseCharacter.mainClass?.name === className) {
+            baseCharacter.mainClass = undefined;
         }
     }
 
