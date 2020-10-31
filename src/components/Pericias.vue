@@ -34,10 +34,10 @@
 </template>
 
 <script lang="ts">
-import { ICharacterHook } from '@/character.hook';
 import { defineComponent, computed, watch, ref } from 'vue';
 import pericias from '@/states/pericias';
 import { IPericia, PericiaName } from '@/types/pericia.types';
+import { ICharacterHook } from '@/types/character.types';
 
 export default defineComponent({
   name: "Pericias",

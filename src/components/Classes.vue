@@ -37,7 +37,7 @@
       <div class="d-flex align-items-center">
         <h1 class="mr-1">{{ modalClass.name }}</h1>
         <div>
-          <p class="destaque">Level:</p>
+          <p class="destaque">Level Atual:</p>
           <select v-model="controlModalLevel">
             <option
               :disabled="isBlockedLevel(item)"
@@ -51,7 +51,9 @@
         </div>
       </div>
       <hr />
-      <p class="mb-3">{{ modalClass }}</p>
+      <!-- <p class="mb-3">{{ modalClass }}</p> -->
+      <!-- {{modalClass}} -->
+      <component :is="computedCharacter.mainClass.value?.component" :hook="hook" :classe="modalClass" />
       <button @click="applyClass" class="mr-1">Aplicar Mudanças</button>
       <button @click="showModal = false" class="outline">Cancelar</button>
     </div>
@@ -62,11 +64,16 @@
 import classes from "@/states/classes";
 
 import { defineComponent, ref, computed, reactive, readonly } from "vue";
-import { ICharacterHook } from "@/character.hook";
 import { IComputedClasse, Levels } from "@/types/classes.types";
+import BaseClasse from "./classes/BaseClasse.vue";
+import { ICharacterHook } from '@/types/character.types';
 
 export default defineComponent({
   name: "Classes",
+
+  components: {
+    BaseClasse,
+  },
 
   props: {
     hook: {

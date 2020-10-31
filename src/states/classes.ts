@@ -1,26 +1,10 @@
-import { IComputedClasse } from '@/types/classes.types';
+import { IComputedClasse, Levels } from '@/types/classes.types';
+import arcanist from '@/states/classes/arcanist/arcanista';
+
+export const AllLevels: Array<Levels> = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
 
 const defaultClasses: Array<IComputedClasse> = [
-    {
-        name: "Arcanista",
-        cod: "arcanist",
-        level: 1,
-        pericias: {
-            numberToChoose: 1,
-            choosable: ["conhecimento", "iniciativa", "oficio", "percepção"],
-            fixed: ["misticismo", "vontade"],
-        },
-    },
-    {
-        name: "Classe 2",
-        cod: "test",
-        level: 1,
-        pericias: {
-            numberToChoose: 2,
-            choosable: ["jogatina", "nobreza", "luta", "fortitude"],
-            fixed: ["iniciativa", "oficio"],
-        },
-    },
+  arcanist,
 ];
 
 export default defaultClasses;

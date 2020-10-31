@@ -1,5 +1,4 @@
-import { ICharacterHook } from '@/character.hook';
-
+import { ICharacterHook } from './character.types';
 export interface IImmunity {
     origin: string,
     value?: string,

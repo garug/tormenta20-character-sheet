@@ -14,6 +14,7 @@ export interface IComputedClasse extends IBaseClasse {
     level: Levels,
     powers?: Array<IPower>,
     pericias: IClassPericia,
+    component: any,
 }
 
 export interface IEntryClass {

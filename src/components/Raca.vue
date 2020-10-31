@@ -31,9 +31,9 @@
 
 <script lang="ts">
 import races from "@/states/races";
+import { ICharacterHook } from '@/types/character.types';
 
 import { defineComponent, computed } from "vue";
-import { ICharacterHook } from "@/character.hook";
 
 export default defineComponent({
   name: "Raca",

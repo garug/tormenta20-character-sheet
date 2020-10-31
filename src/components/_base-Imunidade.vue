@@ -9,8 +9,7 @@
 
 <script lang="ts">
 import { computed } from "vue";
-
-import { ICharacterHook } from "@/character.hook";
+import { ICharacterHook } from '@/types/character.types';
 
 interface IProps {
   characterHook: ICharacterHook;

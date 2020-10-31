@@ -36,8 +36,8 @@
 </template>
 
 <script lang="ts">
-import { ICharacterHook } from "@/character.hook";
 import { IAttribute } from "@/types/attribute.types";
+import { ICharacterHook } from '@/types/character.types';
 import { defineComponent } from "vue";
 
 const Atributos = defineComponent({

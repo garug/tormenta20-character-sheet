@@ -19,9 +19,10 @@
 
 <script lang="ts">
 import origins from "@/states/origins";
+import { ICharacterHook } from '@/types/character.types';
 
 import { defineComponent, computed } from "vue";
-import { ICharacterHook } from "@/character.hook";
+
 export default defineComponent({
   name: "Origem",
 

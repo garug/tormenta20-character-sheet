@@ -1,6 +1,6 @@
 import { computed, watch, reactive, ref, ComputedRef, watchEffect } from "vue";
 
-import { IBaseCharacter, IComputedCharacter, IDisabled, IOtherDefense } from './types/character.types';
+import { IBaseCharacter, IComputedCharacter, IDisabled, IOtherDefense, ICharacterHook } from './types/character.types';
 import { IEntryAttribute } from './types/attribute.types';
 import { IBaseClasse, IComputedClasse, IEntryClass, Levels } from './types/classes.types';
 import { IPower } from './types/power.types';
@@ -12,30 +12,6 @@ import races from './states/races';
 import classes from './states/classes';
 import pericias from './states/pericias';
 import { IPericia, PericiaName } from './types/pericia.types';
-
-export interface ICharacterHook {
-    computedCharacter: IComputedCharacter,
-    baseCharacter: IBaseCharacter,
-
-    applyImunidade: (origin: string, imunidade?: string) => void,
-    setAttribute: (entry: IEntryAttribute) => void,
-    setRace: (race?: IBaseRace) => void,
-    setOrigin: (origin?: IBaseOrigin) => void,
-    setMainClass: (clss?: IBaseClasse) => void,
-    setLevelClss: (clss: IBaseClasse, level: Levels) => void,
-    setPericias: (pericias: Array<PericiaName>) => void,
-    setMovement: (movement: number) => void,
-    addClass: (clss: IEntryClass) => void,
-    removeClass: (className: string) => void,
-    addPower: (power: IPower) => void,
-    removePower: (powerName: string) => void,
-    addDefense: (defense: IOtherDefense) => void,
-    removeDefense: (defenseName: string) => void,
-    addDisable: (disable: IDisabled) => void,
-    removeDisable: (disableName: string) => void,
-
-    isBlockDisabled: (blockName: string) => boolean,
-}
 
 export function generateDefaultCharacter(): IBaseCharacter {
     return {
@@ -235,6 +211,7 @@ export function useCharacter(character?: IBaseCharacter): ICharacterHook {
         immunities: computedImmunities,
         disableds: computedDisableds,
         pericias: computedPericias,
+        powers: computed(() => []),
     }
 
     // Métodos gerais
