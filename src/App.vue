@@ -42,11 +42,11 @@ export default {
 .modal {
   position: fixed;
   background: rgba(0, 0, 0, 0.2);
-  width: 100vw;
-  height: 100vh;
   top: 0;
   left: 0;
   z-index: 1;
+  width: 100%;
+  height: 100%;
 
   .container {
     background: #fff;

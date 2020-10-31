@@ -32,32 +32,38 @@
     </template>
     <p v-else>Nenhuma classe adicionada.</p>
   </section>
-  <div v-if="showModal" class="modal">
-    <div class="container">
-      <div class="d-flex align-items-center">
-        <h1 class="mr-1">{{ modalClass.name }}</h1>
-        <div>
-          <p class="destaque">Level Atual:</p>
-          <select v-model="controlModalLevel">
-            <option
-              :disabled="isBlockedLevel(item)"
-              v-for="item in 20"
-              :key="item"
-              :value="item"
-            >
-              {{ item }}
-            </option>
-          </select>
+  <teleport to="body">
+    <div v-if="showModal" class="modal">
+      <div class="container">
+        <div class="d-flex align-items-center">
+          <h1 class="mr-1">{{ modalClass.name }}</h1>
+          <div>
+            <p class="destaque">Level Atual:</p>
+            <select v-model="controlModalLevel">
+              <option
+                :disabled="isBlockedLevel(item)"
+                v-for="item in 20"
+                :key="item"
+                :value="item"
+              >
+                {{ item }}
+              </option>
+            </select>
+          </div>
         </div>
+        <hr />
+        <!-- <p class="mb-3">{{ modalClass }}</p> -->
+        <!-- {{modalClass}} -->
+        <component
+          :is="computedCharacter.mainClass.value?.component"
+          :hook="hook"
+          :classe="modalClass"
+        />
+        <button @click="applyClass" class="mr-1">Aplicar Mudanças</button>
+        <button @click="showModal = false" class="outline">Cancelar</button>
       </div>
-      <hr />
-      <!-- <p class="mb-3">{{ modalClass }}</p> -->
-      <!-- {{modalClass}} -->
-      <component :is="computedCharacter.mainClass.value?.component" :hook="hook" :classe="modalClass" />
-      <button @click="applyClass" class="mr-1">Aplicar Mudanças</button>
-      <button @click="showModal = false" class="outline">Cancelar</button>
     </div>
-  </div>
+  </teleport>
 </template>
 
 <script lang="ts">
@@ -66,20 +72,20 @@ import classes from "@/states/classes";
 import { defineComponent, ref, computed, reactive, readonly } from "vue";
 import { IComputedClasse, Levels } from "@/types/classes.types";
 import BaseClasse from "./classes/BaseClasse.vue";
-import { ICharacterHook } from '@/types/character.types';
+import { ICharacterHook } from "@/types/character.types";
 
 export default defineComponent({
   name: "Classes",
 
   components: {
-    BaseClasse,
+    BaseClasse
   },
 
   props: {
     hook: {
       type: Object as () => ICharacterHook,
-      required: true,
-    },
+      required: true
+    }
   },
 
   setup(props) {
@@ -87,7 +93,7 @@ export default defineComponent({
     const { computedCharacter, baseCharacter, setRace } = hook;
 
     interface IModalClass extends IComputedClasse {
-      originalLevel: Levels,
+      originalLevel: Levels;
     }
 
     const showModal = ref(false);
@@ -109,7 +115,7 @@ export default defineComponent({
     function applyClass() {
       const clss = modalClass.value;
       hook.setLevelClss(clss, clss.level);
-      showModal.value = false
+      showModal.value = false;
     }
 
     function isMainClass(clss: IComputedClasse) {
@@ -130,7 +136,7 @@ export default defineComponent({
 
     const controlModalLevel = computed({
       get: () => modalClass.value?.level,
-      set: (value) => modalClass.value.level = value,
+      set: value => (modalClass.value.level = value)
     });
 
     function isBlockedLevel(number: number) {
@@ -144,7 +150,7 @@ export default defineComponent({
 
     const disabledClass = (clss: IComputedClasse) =>
       computedCharacter.totalLevel.value >= 20 ||
-      computedCharacter.classes.value.some((e) => e.name === clss.name);
+      computedCharacter.classes.value.some(e => e.name === clss.name);
 
     return {
       hook,
@@ -160,8 +166,8 @@ export default defineComponent({
       openEditor,
       modalClass,
       isBlockedLevel,
-      controlModalLevel,
+      controlModalLevel
     };
-  },
+  }
 });
 </script>
