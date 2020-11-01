@@ -24,7 +24,7 @@ export interface IComputedCharacter {
     mainClass: ComputedRef<IComputedClasse | undefined>,
     totalLevel: ComputedRef<number>,
     origin: ComputedRef<IComputedOrigin | undefined>,
-    attributes: ComputedRef<Array<IComputedAttribute>>,
+    attributes: Array<IComputedAttribute>,
     remaining: ComputedRef<number>,
     immunities: ComputedRef<Array<IImmunity>>,
     powers: ComputedRef<Array<IPower>>,

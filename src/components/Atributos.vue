@@ -1,16 +1,13 @@
 <template>
   <section id="attributes">
+    {{ character.baseCharacter }}
     <h1 class="customized">Atributos</h1>
     <p>
       <span class="destaque">Pontos Restando:</span>
-      {{ computedCharacter.remaining.value }}
+      {{ character.computedCharacter.remaining }}
     </p>
     <hr />
-    <article
-      class="individual"
-      v-for="atb in computedCharacter.attributes.value"
-      :key="atb.short"
-    >
+    <article class="individual" v-for="atb in character.computedCharacter.attributes" :key="atb.short">
       <h1>{{ atb.name }}</h1>
       <div class="atb-info">
         <div class="control-value">
@@ -37,31 +34,38 @@
 
 <script lang="ts">
 import { IAttribute } from "@/types/attribute.types";
-import { ICharacterHook } from '@/types/character.types';
+import { ICharacterHook } from "@/types/character.types";
 import { defineComponent } from "vue";
 
 const Atributos = defineComponent({
   name: "Atributos",
 
   props: {
-    hook: {
+    character: {
       type: Object as () => ICharacterHook,
-      required: true,
-    },
+      required: true
+    }
   },
 
   setup(props) {
-    const { hook } = props;
-    const { computedCharacter } = hook;
+    const { character } = props;
+    const { computedCharacter } = character;
+    const { remaining, attributes } = computedCharacter;
 
     const increment = (atb: IAttribute) =>
-      hook.setAttribute({ attribute: atb, value: atb.value + 1 });
+      character.setAttribute({ attribute: atb, value: atb.value + 1 });
 
     const decrement = (atb: IAttribute) =>
-      hook.setAttribute({ attribute: atb, value: atb.value - 1 });
+      character.setAttribute({ attribute: atb, value: atb.value - 1 });
 
-    return { increment, decrement, computedCharacter };
-  },
+    return {
+      increment,
+      decrement,
+      computedCharacter,
+      remaining,
+      attributes
+    };
+  }
 });
 
 export default Atributos;

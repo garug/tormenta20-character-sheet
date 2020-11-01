@@ -1,6 +1,5 @@
 <template>
-  <p>Caminho Arcanista Works!</p>
-  <!-- <Poder :hook="hook" origin="caminho-arcanista" :items="caminhosArcanista" /> -->
+  <Poder :hook="hook" origin="caminho-arcanista" :items="caminhosArcanista" />
 </template>
 
 <script lang="ts">

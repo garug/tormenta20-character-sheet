@@ -52,7 +52,7 @@ export default defineComponent({
   setup(props) {
     const { hook } = props;
 
-    const modInt = computed(() => hook.computedCharacter.attributes.value[3].mod);
+    const modInt = computed(() => hook.computedCharacter.attributes[3].mod);
     const periciasClasse = computed(() => hook.computedCharacter.mainClass.value?.pericias);
     const selected = ref<Array<PericiaName>>([]);
 

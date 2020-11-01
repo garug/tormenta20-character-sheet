@@ -15,7 +15,7 @@
       </select>
       <button :disabled="!activeClass" @click="newClass">+</button>
     </div>
-    <template v-if="computedCharacter.classes.value.length > 0">
+    <template v-if="computedCharacter.classes.value?.length > 0">
       <div
         v-for="clss in computedCharacter.classes.value"
         :key="clss.name"
@@ -52,8 +52,6 @@
           </div>
         </div>
         <hr />
-        <!-- <p class="mb-3">{{ modalClass }}</p> -->
-        <!-- {{modalClass}} -->
         <component
           :is="computedCharacter.mainClass.value?.component"
           :hook="hook"
@@ -98,6 +96,7 @@ export default defineComponent({
 
     const showModal = ref(false);
     const activeClass = ref(undefined);
+    let modalHook: ICharacterHook = {} as ICharacterHook;
     let modalClass = ref<IModalClass>({} as IModalClass);
 
     function newClass() {
@@ -108,6 +107,7 @@ export default defineComponent({
     }
 
     function openEditor(clss: IComputedClasse) {
+      modalHook = { ...hook };
       modalClass.value = { ...clss, originalLevel: clss.level };
       showModal.value = true;
     }
@@ -150,7 +150,7 @@ export default defineComponent({
 
     const disabledClass = (clss: IComputedClasse) =>
       computedCharacter.totalLevel.value >= 20 ||
-      computedCharacter.classes.value.some(e => e.name === clss.name);
+      computedCharacter.classes.value?.some(e => e.name === clss.name);
 
     return {
       hook,

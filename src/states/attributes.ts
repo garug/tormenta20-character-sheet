@@ -1,4 +1,4 @@
-import { IAttribute, IEntryAttributes, IComputedAttribute } from '@/types/attribute.types';
+import { IAttribute, IEntryAttributes, IComputedAttribute, Attributes } from '@/types/attribute.types';
 
 export const defaultAttributes: Array<IAttribute> = [
     { name: "Força", short: "for", value: 0 },
@@ -25,9 +25,9 @@ export function useAttributes(entry: IEntryAttributes): Array<IComputedAttribute
     }, {})
 }
 
-export function useRemaining(attributes: Array<IAttribute>): number {
-    const defaultComputedValue = (atb: IAttribute) => {
-        switch (atb.value) {
+export function useRemaining(attributes: Attributes): number {
+    const defaultComputedValue = (atb: number) => {
+        switch (atb) {
             case 8:
                 return -2;
             case 9:

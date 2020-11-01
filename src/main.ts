@@ -1,9 +1,10 @@
-import { createApp } from 'vue'
-import App from './App.vue';
-import initGlobalComponents from './components/_globals';
+import { createApp } from "vue";
+import App from "./App.vue";
+import initGlobalComponents from "./components/_globals";
+import { characterStore } from "./character.store";
 
 const app = createApp(App);
 
 initGlobalComponents(app);
 
-app.mount('#app');
+app.use(characterStore).mount("#app");

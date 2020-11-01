@@ -7,7 +7,7 @@
         {{ race.name }}
       </option>
     </select>
-    <ul v-if="computedCharacter.race.value?.powers">
+    <ul v-if="computedCharacter.race?.value?.powers">
       <li
         v-for="spec in computedCharacter.race.value.powers"
         :key="spec.name"

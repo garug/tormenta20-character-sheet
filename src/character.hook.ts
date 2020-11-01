@@ -1,6 +1,6 @@
 import { computed, watch, reactive, ref, ComputedRef, watchEffect } from "vue";
 
-import { IBaseCharacter, IComputedCharacter, IDisabled, IOtherDefense, ICharacterHook } from './types/character.types';
+import { IBaseCharacter, IComputedCharacter, IDisabled, IOtherDefense, ICharacterHook } from '@/types/character.types';
 import { IEntryAttribute } from './types/attribute.types';
 import { IBaseClasse, IComputedClasse, IEntryClass, Levels } from './types/classes.types';
 import { IPower } from './types/power.types';
@@ -13,24 +13,16 @@ import classes from './states/classes';
 import pericias from './states/pericias';
 import { IPericia, PericiaName } from './types/pericia.types';
 
-export function generateDefaultCharacter(): IBaseCharacter {
-    return {
-        race: undefined,
-        classes: [],
-        attributes: [10, 10, 10, 10, 10, 10],
-    }
-}
-
-export function useCharacter(character?: IBaseCharacter): ICharacterHook {
+export function useCharacter(character: IBaseCharacter): ICharacterHook {
     // Cria Character Base
-    const baseCharacter: IBaseCharacter = reactive(character || generateDefaultCharacter());
+    const baseCharacter: IBaseCharacter = reactive(character);
 
     // Controle de Atributos
     const computedAttributes = computed(() => useAttributes({
         attributes: baseCharacter.attributes,
         modifications: computedRace.value?.attributes || []
     }));
-    const computedRemaining = computed(() => useRemaining(computedAttributes.value));
+    const computedRemaining = computed(() => useRemaining(baseCharacter.attributes));
 
     function setAttribute(entry: IEntryAttribute): void {
         const { attribute, value } = entry;
@@ -148,9 +140,17 @@ export function useCharacter(character?: IBaseCharacter): ICharacterHook {
 
     // Controle de Poderes
     const computedImmunities = computed(() => baseCharacter.immunities || []);
+    const computedPowers = computed(() => baseCharacter.powers || []);
 
-    function addPower(power: IPower) {
-        // TODO implementar
+    const addPower = (power: IPower) => {
+        const powers = baseCharacter.powers ||= [];
+        const savedIndex = powers.findIndex(p => p.origin === power.origin);
+        if (savedIndex === -1) {
+            powers.push(power);
+        } else {
+            powers[savedIndex] = power;
+        }
+        baseCharacter.powers = powers;
     }
 
     function removePower(powerName: string) {
@@ -205,13 +205,13 @@ export function useCharacter(character?: IBaseCharacter): ICharacterHook {
         classes: computedClasses,
         mainClass: computedMainClass,
         totalLevel: computedTotalLevel,
-        attributes: computedAttributes,
+        attributes: computedAttributes.value,
         origin: computedOrigin,
         remaining: computedRemaining,
         immunities: computedImmunities,
         disableds: computedDisableds,
         pericias: computedPericias,
-        powers: computed(() => []),
+        powers: computedPowers,
     }
 
     // Métodos gerais

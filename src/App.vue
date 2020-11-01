@@ -1,24 +1,26 @@
 <template>
   <div class="ficha">
-    <Atributos :hook="characterHook" />
-    <Raca :hook="characterHook" />
+    <Atributos :character="hook" />
+    <!-- <Raca :hook="characterHook" />
     <section>
       <Classes :hook="characterHook" />
       <Origem :hook="characterHook" />
     </section>
     <Pericias :hook="characterHook" />
-    <Itens :hook="characterHook" />
+    <Itens :hook="characterHook" /> -->
   </div>
 </template>
 
 <script lang="ts">
-import characterHook from "./character.store";
+import { characterStore } from "./character.store";
 import Atributos from "./components/Atributos.vue";
 import Raca from "./components/Raca.vue";
 import Classes from "./components/Classes.vue";
 import Origem from "./components/Origem.vue";
 import Pericias from "./components/Pericias.vue";
-import Itens from './components/Itens.vue';
+import Itens from "./components/Itens.vue";
+import { watch } from "vue";
+import { LOAD_CHARACTER_HOOK as load } from "./character.store.mutations";
 
 export default {
   components: {
@@ -27,14 +29,27 @@ export default {
     Classes,
     Origem,
     Pericias,
-    Itens,
+    Itens
   },
 
   setup() {
+    const { hook } = characterStore.state;
+
+    watch(
+      hook.computedCharacter,
+      () => {
+        characterStore.commit(load, hook);
+      },
+      {
+        onTrigger(e) {
+          console.log(e);
+        }
+      }
+    );
     return {
-      characterHook,
+      hook
     };
-  },
+  }
 };
 </script>
 
